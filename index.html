@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booped - Web3 AI Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.5/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        html, body {
+            background: #0a0a1a;
+            color: #e0e0ff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        .video-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 1;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .content-container {
+            position: relative;
+            z-index: 2;
+        }
+        .glow {
+            box-shadow: 0 0 20px rgba(100, 150, 255, 0.8), 0 0 40px rgba(100, 150, 255, 0.4);
+        }
+        .animate-float {
+            animation: float 5s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #00ddeb, #ff007a, #8a2be2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .futuristic-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #00ddeb;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+            box-shadow: 0 0 10px rgba(0, 221, 235, 0.8);
+        }
+        .futuristic-cursor::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #00ddeb;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.5;
+        }
+        .cursor-click {
+            transform: scale(1.5);
+            border-color: #ff007a;
+        }
+        .navbar-side {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            backdrop-filter: blur(12px);
+            background: rgba(10, 10, 26, 0.85);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            z-index: 50;
+        }
+        .navbar-top {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            backdrop-filter: blur(12px);
+            background: rgba(10, 10, 26, 0.85);
+            border-bottom: 1px solid rgba(100, 150, 255, 0.3);
+            padding: 0.5rem 1rem;
+            z-index: 50;
+            transform: translateY(-100%);
+        }
+        .nav-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #2a2a5a, #0a0a1a);
+            box-shadow: 0 0 10px rgba(100, 150, 255, 0.5), inset 0 0 5px rgba(100, 150, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .nav-item:hover {
+            transform: scale(1.1);
+            background: linear-gradient(145deg, #3a3a7a, #1a1a3a);
+            box-shadow: 0 0 15px rgba(100, 150, 255, 0.8);
+        }
+        .nav-item i {
+            color: #e0e0ff;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px rgba(100, 150, 255, 0.7);
+        }
+        .navbar-top .nav-item {
+            margin: 0 0.5rem;
+        }
+        .metallic-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #2a2a5a, #0a0a1a);
+            box-shadow: 0 0 10px rgba(100, 150, 255, 0.5), inset 0 0 5px rgba(100, 150, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .metallic-button:hover {
+            transform: scale(1.1);
+            background: linear-gradient(145deg, #3a3a7a, #1a1a3a);
+            box-shadow: 0 0 15px rgba(100, 150, 255, 0.8);
+        }
+        .metallic-button i {
+            color: #e0e0ff;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px rgba(100, 150, 255, 0.7);
+        }
+        .copy-button {
+            background: transparent;
+            border: 2px solid #00ddeb;
+            color: #e0e0ff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .copy-button:hover {
+            background: #00ddeb;
+            color: #0a0a1a;
+            box-shadow: 0 0 15px rgba(0, 221, 235, 0.8);
+        }
+        .copied-tooltip {
+            position: absolute;
+            top: -2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 221, 235, 0.9);
+            color: #0a0a1a;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .dexscreener-iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(100, 150, 255, 0.4);
+        }
+        @media (max-width: 640px) {
+            .text-6xl { font-size: 2.5rem; }
+            .text-5xl { font-size: 2rem; }
+            .text-2xl { font-size: 1.25rem; }
+            .text-lg { font-size: 1rem; }
+            .py-20 { padding-top: 4rem; padding-bottom: 4rem; }
+            .px-4 { padding-left: 1rem; padding-right: 1rem; }
+            .navbar-side { right: 10px; padding: 0.5rem; width: 48px; }
+            .nav-item, .metallic-button { width: 36px; height: 36px; }
+            .nav-item i, .metallic-button i { font-size: 1rem; }
+            .navbar-top { padding: 0.5rem; }
+            .navbar-top .nav-item, .navbar-top .metallic-button { margin: 0 0.3rem; }
+            .copy-button { padding: 0.4rem 1rem; font-size: 0.9rem; }
+            .copied-tooltip { font-size: 0.7rem; padding: 3px 6px; }
+            .dexscreener-iframe { height: 400px; }
+        }
+    </style>
+</head>
+<body>
+    <video class="video-bg" autoplay muted loop playsinline preload="auto">
+        <source src="./assets/loop2.mp4" type="video/mp4" />
+    </video>
+    <div class="futuristic-cursor" id="cursor"></div>
+    <div id="root" class="content-container"></div>
+
+    <script type="text/babel">
+        function Navbar() {
+            const scrollToSection = (id) => {
+                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            };
+
+            const [isScrolled, setIsScrolled] = React.useState(false);
+
+            React.useEffect(() => {
+                const sideNav = document.querySelector('.navbar-side');
+                const topNav = document.querySelector('.navbar-top');
+
+                const handleScroll = () => {
+                    if (window.scrollY > 100) {
+                        setIsScrolled(true);
+                        gsap.to(sideNav, { x: 100, opacity: 0, duration: 0.5, ease: 'power2.out' });
+                        gsap.to(topNav, { y: 0, duration: 0.5, ease: 'power2.out' });
+                    } else {
+                        setIsScrolled(false);
+                        gsap.to(sideNav, { x: 0, opacity: 1, duration: 0.5, ease: 'power2.out' });
+                        gsap.to(topNav, { y: '-100%', duration: 0.5, ease: 'power2.out' });
+                    }
+                };
+
+                const handleMouseMove = (e) => {
+                    if (e.clientY < 100 && isScrolled) {
+                        gsap.to(sideNav, { x: 0, opacity: 1, duration: 0.5, ease: 'power2.out' });
+                        gsap.to(topNav, { y: '-100%', duration: 0.5, ease: 'power2.out' });
+                    }
+                };
+
+                window.addEventListener('scroll', handleScroll);
+                window.addEventListener('mousemove', handleMouseMove);
+
+                return () => {
+                    window.removeEventListener('scroll', handleScroll);
+                    window.removeEventListener('mousemove', handleMouseMove);
+                };
+            }, [isScrolled]);
+
+            return (
+                <>
+                    <nav className="navbar-side">
+                        <button onClick={() => scrollToSection('hero')} className="nav-item" title="Home">
+                            <i className="fas fa-home"></i>
+                        </button>
+                        <button onClick={() => scrollToSection('features')} className="nav-item" title="Features">
+                            <i className="fas fa-cogs"></i>
+                        </button>
+                        <button onClick={() => scrollToSection('about')} className="nav-item" title="About">
+                            <i className="fas fa-info-circle"></i>
+                        </button>
+                        <button onClick={() => scrollToSection('contact')} className="nav-item" title="Contact">
+                            <i className="fas fa-envelope"></i>
+                        </button>
+                        <a href="https://t.me/booped" target="_blank" rel="noopener noreferrer" className="metallic-button" title="Telegram">
+                            <i className="fab fa-telegram-plane"></i>
+                        </a>
+                        <a href="https://x.com/booped" target="_blank" rel="noopener noreferrer" className="metallic-button" title="X">
+                            <i className="fab fa-x-twitter"></i>
+                        </a>
+                    </nav>
+                    <nav className="navbar-top">
+                        <div className="flex space-x-2">
+                            <button onClick={() => scrollToSection('hero')} className="nav-item" title="Home">
+                                <i className="fas fa-home"></i>
+                            </button>
+                            <button onClick={() => scrollToSection('features')} className="nav-item" title="Features">
+                                <i className="fas fa-cogs"></i>
+                            </button>
+                            <button onClick={() => scrollToSection('about')} className="nav-item" title="About">
+                                <i className="fas fa-info-circle"></i>
+                            </button>
+                            <button onClick={() => scrollToSection('contact')} className="nav-item" title="Contact">
+                                <i className="fas fa-envelope"></i>
+                            </button>
+                            <a href="https://t.me/booped" target="_blank" rel="noopener noreferrer" className="metallic-button" title="Telegram">
+                                <i className="fab fa-telegram-plane"></i>
+                            </a>
+                            <a href="https://x.com/booped" target="_blank" rel="noopener noreferrer" className="metallic-button" title="X">
+                                <i className="fab fa-x-twitter"></i>
+                            </a>
+                        </div>
+                    </nav>
+                </>
+            );
+        }
+
+        function Hero() {
+            const [showCopied, setShowCopied] = React.useState(false);
+            const contractAddress = 'SOON'; // Replace with actual CA
+
+            const copyToClipboard = () => {
+                navigator.clipboard.writeText(contractAddress).then(() => {
+                    setShowCopied(true);
+                    setTimeout(() => setShowCopied(false), 2000); // Hide tooltip after 2s
+                }).catch((err) => {
+                    console.error('Failed to copy:', err);
+                    alert('Failed to copy address');
+                });
+            };
+
+            return (
+                <section id="hero" className="min-h-screen flex items-center justify-center text-center">
+                    <div className="animate-float px-4">
+                        <h1 className="text-6xl sm:text-7xl md:text-8xl font-bold gradient-text mb-6">Booped Launch</h1>
+                        <p className="text-lg sm:text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                            Join the $BOOPED revolution! Powered by Web3 and AI, launching tomorrow with strong liquidity and rewards every 10 minutes.
+                        </p>
+                        <div className="relative inline-block">
+                            <button onClick={copyToClipboard} className="copy-button glow">
+                                Copy CA: {contractAddress.slice(0, 6)}...{contractAddress.slice(-4)}
+                            </button>
+                            {showCopied && <span className="copied-tooltip">Copied!</span>}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function Features() {
+            const features = [
+                { 
+                    title: "Web3 Token Launch", 
+                    desc: "Launching tomorrow, $BOOPED leverages blockchain for secure, transparent transactions and rewards." 
+                },
+                { 
+                    title: "AI-Driven Rewards", 
+                    desc: "Our AI-powered system distributes $BOOP rewards every 10 minutes to $BOOPED holders, optimizing participation." 
+                },
+                { 
+                    title: "Decentralized Community", 
+                    desc: "Built on Web3, our ecosystem ensures stability, growth, and community-driven governance for token holders." 
+                },
+            ];
+
+            return (
+                <section id="features" className="py-20">
+                    <div className="container mx-auto px-4">
+                        <h2 className="text-5xl font-bold text-center gradient-text mb-16">Why Booped?</h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                            {features.map((feature, index) => (
+                                <div key={index} className="bg-gray-900 bg-opacity-50 p-6 rounded-xl glow hover:scale-105 transition backdrop-blur-sm">
+                                    <h3 className="text-xl sm:text-2xl font-semibold mb-4 gradient-text">{feature.title}</h3>
+                                    <p className="text-base sm:text-lg">{feature.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function About() {
+            return (
+                <section id="about" className="py-20 bg-gray-900 bg-opacity-30">
+                    <div className="container mx-auto px-4 text-center">
+                        <h2 className="text-5xl font-bold gradient-text mb-10">Our Vision</h2>
+                        <p className="text-base sm:text-lg max-w-3xl mx-auto leading-relaxed">
+                            Booped pioneers the fusion of Web3 and AI, creating a decentralized ecosystem with frequent rewards, robust liquidity, and community-driven innovation.
+                        </p>
+                    </div>
+                </section>
+            );
+        }
+
+        function Contact() {
+            return (
+                <section id="contact" className="py-20">
+                    <div className="container mx-auto px-4 text-center">
+                        <h2 className="text-5xl font-bold gradient-text mb-10">Join the Booped Revolution</h2>
+                        <p className="text-base sm:text-lg mb-8 max-w-2xl mx-auto">
+                            The $BOOPED launch is tomorrow. Connect with us to explore the future of Web3 and AI-driven rewards!
+                        </p>
+                        <button className="bg-transparent border-2 border-blue-400 text-blue-400 px-8 py-4 rounded-full glow hover:bg-blue-400 hover:text-white transition text-lg">
+                            Contact Us
+                        </button>
+                    </div>
+                </section>
+            );
+        }
+
+        function Dexscreener() {
+            return (
+                <section id="dexscreener" className="py-20 bg-gray-900 bg-opacity-30">
+                    <div className="container mx-auto px-4 text-center">
+                        <h2 className="text-5xl font-bold gradient-text mb-10">$BOOPED Chart</h2>
+                        <div className="max-w-4xl mx-auto">
+                            <iframe
+                                className="dexscreener-iframe glow"
+                                src="https://dexscreener.com/ethereum/0x1234567890abcdef1234567890abcdef12345678" // Replace with actual Dexscreener URL
+                                title="Dexscreener Chart"
+                            ></iframe>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function App() {
+            return (
+                <div>
+                    <Navbar />
+                    <Hero />
+                    <Features />
+                    <About />
+                    <Contact />
+                    <Dexscreener />
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+
+        // Futuristic cursor logic
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+        });
+        document.addEventListener('mousedown', () => {
+            cursor.classList.add('cursor-click');
+        });
+        document.addEventListener('mouseup', () => {
+            cursor.classList.remove('cursor-click');
+        });
+    </script>
+</body>
+</html>
