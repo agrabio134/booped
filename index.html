@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booped - Web3 AI Platform</title>
-      <link rel="icon" type="image/x-icon" href="/assets/logo1.png">
+    <link rel="icon" type="image/x-icon" href="/assets/logo1.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
@@ -194,10 +194,21 @@
         }
         .floating-logo {
             position: absolute;
-            width: 150px;
+            width: 80px;
             height: auto;
             z-index: -1;
             pointer-events: none;
+            opacity: 0.5;
+            filter: drop-shadow(0 0 10px rgba(100, 150, 255, 0.8));
+        }
+        .moving-logo {
+            position: absolute;
+            width: 80px;
+            height: auto;
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.5;
+            filter: drop-shadow(0 0 10px rgba(100, 150, 255, 0.8));
         }
         @media (max-width: 640px) {
             .text-6xl { font-size: 2.5rem; }
@@ -214,7 +225,7 @@
             .copy-button { padding: 0.4rem 1rem; font-size: 0.9rem; }
             .copied-tooltip { font-size: 0.7rem; padding: 3px 6px; }
             .dexscreener-iframe { height: 400px; }
-            .floating-logo { width: 100px; }
+            .floating-logo, .moving-logo { width: 60px; }
         }
     </style>
 </head>
@@ -431,35 +442,113 @@
 
         function FloatingLogos() {
             React.useEffect(() => {
-                const logos = document.querySelectorAll('.floating-logo');
-                logos.forEach((logo, index) => {
+                // Floating logos animation
+                const floatingLogos = document.querySelectorAll('.floating-logo');
+                floatingLogos.forEach((logo, index) => {
+                    const randomX = Math.random() * window.innerWidth;
+                    const randomY = Math.random() * window.innerHeight;
                     gsap.fromTo(
                         logo,
                         { 
                             opacity: 0, 
-                            x: index % 2 === 0 ? -100 : 100, 
-                            y: index < 2 ? -100 : 100 
+                            x: randomX, 
+                            y: randomY 
                         },
                         { 
-                            opacity: 0.7, 
-                            x: 0, 
-                            y: 0, 
-                            duration: 2, 
-                            ease: 'power2.out', 
+                            opacity: 0.5, 
+                            x: randomX + (Math.random() * 200 - 100), 
+                            y: randomY + (Math.random() * 200 - 100), 
+                            duration: 3, 
+                            ease: 'power2.inOut', 
                             repeat: -1, 
                             yoyo: true, 
+                            delay: index * 0.2 
+                        }
+                    );
+                });
+
+                // Moving logos animation (left to right with rotation)
+                const movingLogos = document.querySelectorAll('.moving-logo');
+                movingLogos.forEach((logo, index) => {
+                    const startY = (index + 1) * (window.innerHeight / (movingLogos.length + 1));
+                    gsap.fromTo(
+                        logo,
+                        { 
+                            x: -100, 
+                            y: startY, 
+                            rotation: 0, 
+                            opacity: 0 
+                        },
+                        { 
+                            x: window.innerWidth + 100, 
+                            y: startY + (Math.random() * 100 - 50), 
+                            rotation: 360, 
+                            opacity: 0.5, 
+                            duration: 5 + Math.random() * 5, 
+                            ease: 'linear', 
+                            repeat: -1, 
                             delay: index * 0.5 
                         }
                     );
                 });
             }, []);
 
+            const floatingLogoPositions = [
+                { top: '5%', left: '5%' },
+                { top: '5%', right: '5%' },
+                { bottom: '5%', left: '5%' },
+                { bottom: '5%', right: '5%' },
+                { top: '20%', left: '15%' },
+                { top: '20%', right: '15%' },
+                { bottom: '20%', left: '15%' },
+                { bottom: '20%', right: '15%' },
+                { top: '35%', left: '25%' },
+                { top: '35%', right: '25%' },
+                { bottom: '35%', left: '25%' },
+                { bottom: '35%', right: '25%' },
+                { top: '50%', left: '10%' },
+                { top: '50%', right: '10%' },
+                { bottom: '50%', left: '20%' },
+                { bottom: '50%', right: '20%' },
+                { top: '65%', left: '30%' },
+                { top: '65%', right: '30%' },
+                { bottom: '65%', left: '10%' },
+                { bottom: '65%', right: '10%' },
+                { top: '80%', left: '5%' },
+                { top: '80%', right: '5%' },
+                { bottom: '80%', left: '15%' },
+                { bottom: '80%', right: '15%' },
+                { top: '10%', left: '30%' },
+                { top: '10%', right: '30%' },
+                { bottom: '10%', left: '20%' },
+                { bottom: '10%', right: '20%' },
+                { top: '25%', left: '35%' },
+                { top: '25%', right: '35%' },
+                { bottom: '25%', left: '30%' },
+                { bottom: '25%', right: '30%' },
+            ];
+
+            const movingLogoCount = 20; // Number of moving logos
+
             return (
                 <>
-                    <img src="./assets/logo1.png" className="floating-logo" style={{ top: '10%', left: '10%' }} alt="Booped Logo 1" />
-                    <img src="./assets/logo1.png" className="floating-logo" style={{ top: '10%', right: '10%' }} alt="Booped Logo 2" />
-                    <img src="./assets/logo1.png" className="floating-logo" style={{ bottom: '10%', left: '10%' }} alt="Booped Logo 3" />
-                    <img src="./assets/logo1.png" className="floating-logo" style={{ bottom: '10%', right: '10%' }} alt="Booped Logo 4" />
+                    {floatingLogoPositions.map((pos, index) => (
+                        <img 
+                            key={`floating-${index}`}
+                            src="./assets/logo1.png" 
+                            className="floating-logo" 
+                            style={{ ...pos, width: '80px' }} 
+                            alt={`Booped Logo ${index + 1}`} 
+                        />
+                    ))}
+                    {Array.from({ length: movingLogoCount }).map((_, index) => (
+                        <img 
+                            key={`moving-${index}`}
+                            src="./assets/logo1.png" 
+                            className="moving-logo" 
+                            alt={`Booped Moving Logo ${index + 1}`} 
+                        />
+                    ))}
                 </>
             );
         }
