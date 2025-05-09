@@ -190,6 +190,13 @@
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(100, 150, 255, 0.4);
         }
+        .floating-logo {
+            position: absolute;
+            width: 150px;
+            height: auto;
+            z-index: 3;
+            pointer-events: none;
+        }
         @media (max-width: 640px) {
             .text-6xl { font-size: 2.5rem; }
             .text-5xl { font-size: 2rem; }
@@ -205,6 +212,7 @@
             .copy-button { padding: 0.4rem 1rem; font-size: 0.9rem; }
             .copied-tooltip { font-size: 0.7rem; padding: 3px 6px; }
             .dexscreener-iframe { height: 400px; }
+            .floating-logo { width: 100px; }
         }
     </style>
 </head>
@@ -397,7 +405,6 @@
                                 <i className="fab fa-telegram-plane"></i>
                             </a>
                         </div>
-                        
                     </div>
                 </section>
             );
@@ -420,9 +427,45 @@
             );
         }
 
+        function FloatingLogos() {
+            React.useEffect(() => {
+                const logos = document.querySelectorAll('.floating-logo');
+                logos.forEach((logo, index) => {
+                    gsap.fromTo(
+                        logo,
+                        { 
+                            opacity: 0, 
+                            x: index % 2 === 0 ? -100 : 100, 
+                            y: index < 2 ? -100 : 100 
+                        },
+                        { 
+                            opacity: 0.7, 
+                            x: 0, 
+                            y: 0, 
+                            duration: 2, 
+                            ease: 'power2.out', 
+                            repeat: -1, 
+                            yoyo: true, 
+                            delay: index * 0.5 
+                        }
+                    );
+                });
+            }, []);
+
+            return (
+                <>
+                    <img src="./assets/logo1.png" className="floating-logo" style={{ top: '10%', left: '10%' }} alt="Booped Logo 1" />
+                    <img src="./assets/logo1.png" className="floating-logo" style={{ top: '10%', right: '10%' }} alt="Booped Logo 2" />
+                    <img src="./assets/logo1.png" className="floating-logo" style={{ bottom: '10%', left: '10%' }} alt="Booped Logo 3" />
+                    <img src="./assets/logo1.png" className="floating-logo" style={{ bottom: '10%', right: '10%' }} alt="Booped Logo 4" />
+                </>
+            );
+        }
+
         function App() {
             return (
                 <div>
+                    <FloatingLogos />
                     <Navbar />
                     <Hero />
                     <Features />
