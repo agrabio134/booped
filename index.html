@@ -53,12 +53,10 @@
         }
 
         @keyframes float {
-
             0%,
             100% {
                 transform: translateY(0);
             }
-
             50% {
                 transform: translateY(-15px);
             }
@@ -244,6 +242,20 @@
             filter: drop-shadow(0 0 10px rgba(100, 150, 255, 0.8));
         }
 
+        .tweet-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .tweet-image {
+            max-width: 100%;
+            max-height: 400px;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+        }
+
         @media (max-width: 640px) {
             .text-6xl {
                 font-size: 2.5rem;
@@ -315,6 +327,14 @@
             .moving-logo {
                 width: 60px;
             }
+
+            .tweet-container {
+                max-width: 90%;
+            }
+
+            .tweet-image {
+                max-height: 300px;
+            }
         }
 
         #dexscreener-embed {
@@ -322,7 +342,6 @@
             width: 100%;
             padding-bottom: 125%;
         }
-
 
         #dexscreener-embed iframe {
             position: absolute;
@@ -427,6 +446,18 @@
                         </div>
                     </nav>
                 </>
+            );
+        }
+
+        function Tweet() {
+            return (
+                <section id="tweet" className="py-10 text-center">
+                    <div className="tweet-container">
+                        <a href="https://x.com/LFGBrothers/status/1920787189891235981" target="_blank" rel="noopener noreferrer">
+                            <img src="/assets/tweet.png" alt="Booped Tweet" className="tweet-image" />
+                        </a>
+                    </div>
+                </section>
             );
         }
 
@@ -664,6 +695,7 @@
                     <Features />
                     <About />
                     <Contact />
+                    <Tweet />
                     <Dexscreener />
                 </div>
             );
