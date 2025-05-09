@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,7 +14,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
-        html, body {
+        html,
+        body {
             background: #0a0a1a;
             color: #e0e0ff;
             font-family: 'Inter', sans-serif;
@@ -24,6 +26,7 @@
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
+
         .video-bg {
             position: fixed;
             top: 0;
@@ -35,26 +38,39 @@
             opacity: 0.7;
             pointer-events: none;
         }
+
         .content-container {
             position: relative;
             z-index: 2;
         }
+
         .glow {
             box-shadow: 0 0 20px rgba(100, 150, 255, 0.8), 0 0 40px rgba(100, 150, 255, 0.4);
         }
+
         .animate-float {
             animation: float 5s ease-in-out infinite;
         }
+
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
         }
+
         .gradient-text {
             background: linear-gradient(45deg, #00ddeb, #ff007a, #8a2be2);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
+
         .futuristic-cursor {
             position: fixed;
             width: 20px;
@@ -67,6 +83,7 @@
             transition: all 0.1s ease;
             box-shadow: 0 0 10px rgba(0, 221, 235, 0.8);
         }
+
         .futuristic-cursor::after {
             content: '';
             position: absolute;
@@ -79,10 +96,12 @@
             transform: translate(-50%, -50%);
             opacity: 0.5;
         }
+
         .cursor-click {
             transform: scale(1.5);
             border-color: #ff007a;
         }
+
         .navbar-side {
             position: fixed;
             right: 20px;
@@ -99,6 +118,7 @@
             border: 1px solid rgba(100, 150, 255, 0.3);
             z-index: 50;
         }
+
         .navbar-top {
             position: fixed;
             top: 0;
@@ -112,6 +132,7 @@
             z-index: 50;
             transform: translateY(-100%);
         }
+
         .nav-item {
             display: inline-flex;
             align-items: center;
@@ -123,19 +144,23 @@
             box-shadow: 0 0 10px rgba(100, 150, 255, 0.5), inset 0 0 5px rgba(100, 150, 255, 0.3);
             transition: all 0.3s ease;
         }
+
         .nav-item:hover {
             transform: scale(1.1);
             background: linear-gradient(145deg, #3a3a7a, #1a1a3a);
             box-shadow: 0 0 15px rgba(100, 150, 255, 0.8);
         }
+
         .nav-item i {
             color: #e0e0ff;
             font-size: 1.2rem;
             text-shadow: 0 0 5px rgba(100, 150, 255, 0.7);
         }
+
         .navbar-top .nav-item {
             margin: 0 0.5rem;
         }
+
         .metallic-button {
             display: inline-flex;
             align-items: center;
@@ -147,16 +172,19 @@
             box-shadow: 0 0 10px rgba(100, 150, 255, 0.5), inset 0 0 5px rgba(100, 150, 255, 0.3);
             transition: all 0.3s ease;
         }
+
         .metallic-button:hover {
             transform: scale(1.1);
             background: linear-gradient(145deg, #3a3a7a, #1a1a3a);
             box-shadow: 0 0 15px rgba(100, 150, 255, 0.8);
         }
+
         .metallic-button i {
             color: #e0e0ff;
             font-size: 1.2rem;
             text-shadow: 0 0 5px rgba(100, 150, 255, 0.7);
         }
+
         .copy-button {
             background: transparent;
             border: 2px solid #00ddeb;
@@ -167,11 +195,13 @@
             transition: all 0.3s ease;
             position: relative;
         }
+
         .copy-button:hover {
             background: #00ddeb;
             color: #0a0a1a;
             box-shadow: 0 0 15px rgba(0, 221, 235, 0.8);
         }
+
         .copied-tooltip {
             position: absolute;
             top: -2rem;
@@ -185,6 +215,7 @@
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
+
         .dexscreener-iframe {
             width: 100%;
             height: 600px;
@@ -192,6 +223,7 @@
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(100, 150, 255, 0.4);
         }
+
         .floating-logo {
             position: absolute;
             width: 80px;
@@ -201,6 +233,7 @@
             opacity: 0.5;
             filter: drop-shadow(0 0 10px rgba(100, 150, 255, 0.8));
         }
+
         .moving-logo {
             position: absolute;
             width: 80px;
@@ -210,25 +243,98 @@
             opacity: 0.5;
             filter: drop-shadow(0 0 10px rgba(100, 150, 255, 0.8));
         }
+
         @media (max-width: 640px) {
-            .text-6xl { font-size: 2.5rem; }
-            .text-5xl { font-size: 2rem; }
-            .text-2xl { font-size: 1.25rem; }
-            .text-lg { font-size: 1rem; }
-            .py-20 { padding-top: 4rem; padding-bottom: 4rem; }
-            .px-4 { padding-left: 1rem; padding-right: 1rem; }
-            .navbar-side { right: 10px; padding: 0.5rem; width: 48px; }
-            .nav-item, .metallic-button { width: 36px; height: 36px; }
-            .nav-item i, .metallic-button i { font-size: 1rem; }
-            .navbar-top { padding: 0.5rem; }
-            .navbar-top .nav-item, .navbar-top .metallic-button { margin: 0 0.3rem; }
-            .copy-button { padding: 0.4rem 1rem; font-size: 0.9rem; }
-            .copied-tooltip { font-size: 0.7rem; padding: 3px 6px; }
-            .dexscreener-iframe { height: 400px; }
-            .floating-logo, .moving-logo { width: 60px; }
+            .text-6xl {
+                font-size: 2.5rem;
+            }
+
+            .text-5xl {
+                font-size: 2rem;
+            }
+
+            .text-2xl {
+                font-size: 1.25rem;
+            }
+
+            .text-lg {
+                font-size: 1rem;
+            }
+
+            .py-20 {
+                padding-top: 4rem;
+                padding-bottom: 4rem;
+            }
+
+            .px-4 {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .navbar-side {
+                right: 10px;
+                padding: 0.5rem;
+                width: 48px;
+            }
+
+            .nav-item,
+            .metallic-button {
+                width: 36px;
+                height: 36px;
+            }
+
+            .nav-item i,
+            .metallic-button i {
+                font-size: 1rem;
+            }
+
+            .navbar-top {
+                padding: 0.5rem;
+            }
+
+            .navbar-top .nav-item,
+            .navbar-top .metallic-button {
+                margin: 0 0.3rem;
+            }
+
+            .copy-button {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .copied-tooltip {
+                font-size: 0.7rem;
+                padding: 3px 6px;
+            }
+
+            .dexscreener-iframe {
+                height: 400px;
+            }
+
+            .floating-logo,
+            .moving-logo {
+                width: 60px;
+            }
+        }
+
+        #dexscreener-embed {
+            position: relative;
+            width: 100%;
+            padding-bottom: 125%;
+        }
+
+
+        #dexscreener-embed iframe {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border: 0;
         }
     </style>
 </head>
+
 <body>
     <video class="video-bg" autoplay muted loop playsinline preload="auto">
         <source src="./assets/loop2.mp4" type="video/mp4" />
@@ -358,17 +464,17 @@
 
         function Features() {
             const features = [
-                { 
-                    title: "Web3 Token Launch", 
-                    desc: "$BOOPED leverages blockchain for secure, transparent transactions and rewards." 
+                {
+                    title: "Web3 Token Launch",
+                    desc: "$BOOPED leverages blockchain for secure, transparent transactions and rewards."
                 },
-                { 
-                    title: "AI-Driven Rewards", 
-                    desc: "Our AI-powered system distributes $BOOP rewards every 5 minutes to $BOOPED holders, optimizing participation." 
+                {
+                    title: "AI-Driven Rewards",
+                    desc: "Our AI-powered system distributes $BOOP rewards every 5 minutes to $BOOPED holders, optimizing participation."
                 },
-                { 
-                    title: "Decentralized Community", 
-                    desc: "Built on Web3, our ecosystem ensures stability, growth, and community-driven governance for token holders." 
+                {
+                    title: "Decentralized Community",
+                    desc: "Built on Web3, our ecosystem ensures stability, growth, and community-driven governance for token holders."
                 },
             ];
 
@@ -429,11 +535,7 @@
                     <div className="container mx-auto px-4 text-center">
                         <h2 className="text-5xl font-bold gradient-text mb-10">$BOOPED Chart</h2>
                         <div className="max-w-4xl mx-auto">
-                            <iframe
-                                className="dexscreener-iframe glow"
-                                src="https://dexscreener.com/ethereum/0x1234567890abcdef1234567890abcdef12345678" // Replace with actual Dexscreener URL
-                                title="Dexscreener Chart"
-                            ></iframe>
+                            <div id="dexscreener-embed"><iframe src="https://dexscreener.com/solana/FjkTn5DFFnfFywtsLEx5P6bzB3bTgFfZbRPmqjq6SwhS?embed=1&loadChartSettings=0&tabs=0&info=0&chartLeftToolbar=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15"></iframe></div>
                         </div>
                     </div>
                 </section>
@@ -449,20 +551,20 @@
                     const randomY = Math.random() * window.innerHeight;
                     gsap.fromTo(
                         logo,
-                        { 
-                            opacity: 0, 
-                            x: randomX, 
-                            y: randomY 
+                        {
+                            opacity: 0,
+                            x: randomX,
+                            y: randomY
                         },
-                        { 
-                            opacity: 0.5, 
-                            x: randomX + (Math.random() * 200 - 100), 
-                            y: randomY + (Math.random() * 200 - 100), 
-                            duration: 3, 
-                            ease: 'power2.inOut', 
-                            repeat: -1, 
-                            yoyo: true, 
-                            delay: index * 0.2 
+                        {
+                            opacity: 0.5,
+                            x: randomX + (Math.random() * 200 - 100),
+                            y: randomY + (Math.random() * 200 - 100),
+                            duration: 3,
+                            ease: 'power2.inOut',
+                            repeat: -1,
+                            yoyo: true,
+                            delay: index * 0.2
                         }
                     );
                 });
@@ -473,21 +575,21 @@
                     const startY = (index + 1) * (window.innerHeight / (movingLogos.length + 1));
                     gsap.fromTo(
                         logo,
-                        { 
-                            x: -100, 
-                            y: startY, 
-                            rotation: 0, 
-                            opacity: 0 
+                        {
+                            x: -100,
+                            y: startY,
+                            rotation: 0,
+                            opacity: 0
                         },
-                        { 
-                            x: window.innerWidth + 100, 
-                            y: startY + (Math.random() * 100 - 50), 
-                            rotation: 360, 
-                            opacity: 0.5, 
-                            duration: 5 + Math.random() * 5, 
-                            ease: 'linear', 
-                            repeat: -1, 
-                            delay: index * 0.5 
+                        {
+                            x: window.innerWidth + 100,
+                            y: startY + (Math.random() * 100 - 50),
+                            rotation: 360,
+                            opacity: 0.5,
+                            duration: 5 + Math.random() * 5,
+                            ease: 'linear',
+                            repeat: -1,
+                            delay: index * 0.5
                         }
                     );
                 });
@@ -533,20 +635,20 @@
             return (
                 <>
                     {floatingLogoPositions.map((pos, index) => (
-                        <img 
+                        <img
                             key={`floating-${index}`}
-                            src="./assets/logo1.png" 
-                            className="floating-logo" 
-                            style={{ ...pos, width: '80px' }} 
-                            alt={`Booped Logo ${index + 1}`} 
+                            src="./assets/logo1.png"
+                            className="floating-logo"
+                            style={{ ...pos, width: '80px' }}
+                            alt={`Booped Logo ${index + 1}`}
                         />
                     ))}
                     {Array.from({ length: movingLogoCount }).map((_, index) => (
-                        <img 
+                        <img
                             key={`moving-${index}`}
-                            src="./assets/logo1.png" 
-                            className="moving-logo" 
-                            alt={`Booped Moving Logo ${index + 1}`} 
+                            src="./assets/logo1.png"
+                            className="moving-logo"
+                            alt={`Booped Moving Logo ${index + 1}`}
                         />
                     ))}
                 </>
@@ -583,4 +685,5 @@
         });
     </script>
 </body>
+
 </html>
